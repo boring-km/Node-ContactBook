@@ -1,5 +1,5 @@
 var express = require('express');
-var mongoose = require('mongoose');
+var mongoose = require('mongoose');   // export MONGO_DB='mongodb+srv://testid:gangmin484@cluster-test.053ne.gcp.mongodb.net/test?retryWrites=true&w=majority'
 var bodyParser = require('body-parser');
 var app = express();
 
@@ -8,6 +8,7 @@ mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
+console.log(process.env.MONGO_DB);
 mongoose.connect(process.env.MONGO_DB);
 var db = mongoose.connection;
 
@@ -25,7 +26,7 @@ app.use(express.static(__dirname+'/public'));
 app.use(bodyParser.json()); // 2
 app.use(bodyParser.urlencoded({extended:true}));
 
-// DB schema // 4
+// DB schema
 var contactSchema = mongoose.Schema({
   name:{type:String, required:true, unique:true},
   email:{type:String},
