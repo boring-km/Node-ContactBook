@@ -24,6 +24,4 @@ var contactSchema = mongoose.Schema({
   phone:{type:String}
 });
 
-exports.Contact = function(){
-  return mongoose.model('contact', contactSchema);
-}
+exports.Contact = mongoose.model('contact', contactSchema);
