@@ -1,6 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var methodOverride = require('method-override');
+var methodOverride = require('method-override');  // query로 method값을 받아서 request의 HTTP method를 바꿔주는 역할
 var app = express();
 var db = require('./db.js');
 
@@ -32,6 +32,35 @@ app.post('/contacts', function(req, res){
 app.get('/contacts/new', function(req, res){
   res.render('contacts/new');
 });
+
+app.get('/contacts/:id', function(req, res){
+  db.Contact.findOne({_id:req.params.id}, function (err, contact) {
+    if (err) return res.json(err);
+    res.render('contacts/show', {contact:contact});
+  });
+});
+
+app.get('/contacts/:id/edit', function(req, res){
+  db.Contact.findOne({_id:req.params.id}, function(err, contact){
+    if(err) return res.json(err);
+    res.render('contacts/edit', {contact:contact});
+  });
+});
+
+app.put('/contacts/:id', function (req, res) {
+  db.Contact.findOneAndUpdate({_id:req.params.id}, req.body, function (err, contact) {
+    if(err) return res.json(err);
+    res.redirect('/contacts/'+req.params.id);
+  });
+});
+
+app.delete('/contacts/:id', function (req, res) {
+  db.Contact.deleteOne({_id:req.params.id}, function (err) {
+    if(err) return res.json(err);
+    res.redirect('/contacts');
+  });
+});
+
 
 
 var port = 3000;
